@@ -71,10 +71,12 @@ class SastParser(Parser):
             pass
         
         try:
-            output += "identifiers.name: {identifiers_name}\n".format(identifiers_name=finding['identifiers'][0]['name'])
-            output += "identifiers.type: {identifiers_type}\n".format(identifiers_type=finding['identifiers'][0]['type'])
-            output += "identifiers.value: {identifiers_value}\n".format(identifiers_value=finding['identifiers'][0]['value'])
-            output += "identifiers.url: {identifiers_url}\n".format(identifiers_url=finding['identifiers'][0]['url'])
+            for identifier in finding['identifiers']:
+                output += "--------- RESOLUTION ----------"
+                output += "identifiers.name: {identifiers_name}\n".format(identifiers_name=identifier['name'])
+                output += "identifiers.type: {identifiers_type}\n".format(identifiers_type=identifier['type'])
+                output += "identifiers.value: {identifiers_value}\n".format(identifiers_value=identifier['value'])
+                output += "identifiers.url: {identifiers_url}\n".format(identifiers_url=identifier['url'])
         except KeyError:
             pass
 
@@ -86,9 +88,9 @@ class SastParser(Parser):
             finding_id = str(randrange(1, 10000000))
         
         if properties['name']:
-            tc = TestCase(name=properties['name'] + " (ID: " + finding_id + ")", classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
+            tc = TestCase(name=properties['severity']  + " - " + properties['name'] , classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
         else:
-            tc = TestCase(name=f_type + " (ID: " + finding_id + ")", classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
+            tc = TestCase(name=properties['severity']  + " - " + f_type , classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
         tc.add_failure_info(message=properties['message'], output=output, failure_type=f_type)
         return tc
 
