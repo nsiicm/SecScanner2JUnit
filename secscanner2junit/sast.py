@@ -88,9 +88,9 @@ class SastParser(Parser):
             finding_id = str(randrange(1, 10000000))
         
         if properties['name']:
-            tc = TestCase(name=properties['severity']  + " - " + properties['name']  + "(ID : " + properties['id'] + ")", classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
+            tc = TestCase(name=properties['severity']  + " - " + properties['name']  + " - ID : " + properties['id'], classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
         else:
-            tc = TestCase(name=properties['severity']  + " - " + f_type + "(ID : " + properties['id'] + ")", classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
+            tc = TestCase(name=properties['severity']  + " - " + f_type + " - ID : " + properties['id'] , classname=self.p_type, file=properties['file'], elapsed_sec=time, line=properties['start_line'])
         tc.add_failure_info(message=properties['message'], output=output, failure_type=f_type)
         return tc
 
